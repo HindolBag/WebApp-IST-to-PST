@@ -24,7 +24,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f8f9fa; /* Optional: a light background color for contrast */
+            background-color: #f8f9fa;
         }
 
         .container-slide-in {
@@ -43,16 +43,6 @@
         @keyframes inputBounceIn {
             0% { transform: scale(0.8); opacity: 0; }
             50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); }
-        }
-
-        .pop-in {
-            animation: popIn 0.5s ease-in-out;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            50% { transform: scale(1.05); opacity: 1; }
             100% { transform: scale(1); }
         }
 
@@ -84,7 +74,15 @@
 
         footer {
             padding: 1rem;
-            background-color: #f8f9fa; /* Optional: a light background color for contrast */
+            background-color: #f8f9fa;
+        }
+
+        .alert-custom {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            background-color: transparent;
+            border: none;
+            color: black;
         }
     </style>
 </head>
@@ -98,7 +96,7 @@
                         <div class="card shadow input-bounce-in">
                             <div class="card-body">
                                 <p class="card-text">Enter the date and time in IST:</p>
-                                <input type="text" class="form-control mb-3 input-focus-pulse" id="istTime" placeholder="Aug 09 2024 12:30 PM">
+                                <input type="text" class="form-control mb-3 input-focus-pulse" id="istTime" placeholder="e.g. Aug 09, 2024 12:34 AM">
                                 <button class="btn btn-primary w-100 button-bounce" onclick="convertTime()">Convert to PST</button>
                             </div>
                         </div>
@@ -106,7 +104,7 @@
                 </div>
                 <div class="row justify-content-center mt-4">
                     <div class="col-md-6">
-                        <div class="alert alert-info text-center d-none" id="pstTimeContainer">
+                        <div class="alert alert-info text-center d-none alert-custom" id="pstTimeContainer">
                             <span id="pstTime"></span>
                         </div>
                     </div>
@@ -116,7 +114,7 @@
 
         <!-- Developer Credit -->
         <footer class="text-center mt-5">
-            <p class="footer-gradient m-0">This Webapp is developed & maintained by Hindol Bag</p>
+            <p class="footer-gradient m-0">This WebApp is Developed & Maintained by Hindol Bag</p>
         </footer>
     </div>
 
@@ -125,7 +123,10 @@
     
     <script>
         function convertTime() {
-            const istTimeInput = document.getElementById('istTime').value.trim();
+            let istTimeInput = document.getElementById('istTime').value.trim();
+            
+            // Ensure input is in the correct format
+            istTimeInput = istTimeInput.replace(/(\d{1,2})([APM]{2})$/, '$1 $2');
 
             if (!istTimeInput) {
                 displayMessage("Please enter a valid IST date and time.", "danger");
@@ -155,7 +156,7 @@
 
         function displayMessage(message, type) {
             const pstTimeContainer = document.getElementById('pstTimeContainer');
-            pstTimeContainer.className = `alert alert-${type} text-center pop-in`;
+            pstTimeContainer.className = `alert alert-${type} text-center pop-in alert-custom`;
             pstTimeContainer.innerHTML = message;
             pstTimeContainer.classList.remove('d-none');
         }
