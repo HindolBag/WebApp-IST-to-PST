@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IST to PST Time Conversion</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Full viewport height and flex alignment */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa; /* Optional: a light background color for contrast */
+        }
+
+        .container-slide-in {
+            animation: containerSlideIn 1s ease-in-out;
+        }
+
+        @keyframes containerSlideIn {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .input-bounce-in {
+            animation: inputBounceIn 0.8s ease-in-out;
+        }
+
+        @keyframes inputBounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        .pop-in {
+            animation: popIn 0.5s ease-in-out;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        .button-bounce:active {
+            animation: buttonBounce 0.3s ease-in-out;
+        }
+
+        @keyframes buttonBounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1.1); }
+        }
+
+        .input-focus-pulse:focus {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(0, 123, 255, 0.7); }
+            100% { box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); }
+        }
+
+        .footer-gradient {
+            background: linear-gradient(90deg, black, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        footer {
+            padding: 1rem;
+            background-color: #f8f9fa; /* Optional: a light background color for contrast */
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="main-content">
+            <div class="container mt-5 container-slide-in">
+                <h2 class="text-center mb-4">IST to PST Time Conversion</h2>
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card shadow input-bounce-in">
+                            <div class="card-body">
+                                <p class="card-text">Enter the date and time in IST:</p>
+                                <input type="text" class="form-control mb-3 input-focus-pulse" id="istTime" placeholder="Aug 09 2024 12:30 PM">
+                                <button class="btn btn-primary w-100 button-bounce" onclick="convertTime()">Convert to PST</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-4">
+                    <div class="col-md-6">
+                        <div class="alert alert-info text-center d-none" id="pstTimeContainer">
+                            <span id="pstTime"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Developer Credit -->
+        <footer class="text-center mt-5">
+            <p class="footer-gradient m-0">This Webapp is developed & maintained by Hindol Bag</p>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function convertTime() {
+            const istTimeInput = document.getElementById('istTime').value.trim();
+
+            if (!istTimeInput) {
+                displayMessage("Please enter a valid IST date and time.", "danger");
+                return;
+            }
+
+            try {
+                const istDate = new Date(istTimeInput + " GMT+0530");
+
+                if (isNaN(istDate.getTime())) {
+                    throw new Error("Invalid date format");
+                }
+
+                const pstDate = new Date(istDate.getTime() - (12.5 * 60 * 60 * 1000));
+
+                const options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+                let pstTimeFormatted = pstDate.toLocaleString('en-US', options);
+
+                pstTimeFormatted = pstTimeFormatted.replace(/(\d{4}),/, '$1');
+
+                displayMessage(`PST Time: ${pstTimeFormatted}`, "info");
+
+            } catch (error) {
+                displayMessage("Please enter a valid IST date and time.", "danger");
+            }
+        }
+
+        function displayMessage(message, type) {
+            const pstTimeContainer = document.getElementById('pstTimeContainer');
+            pstTimeContainer.className = `alert alert-${type} text-center pop-in`;
+            pstTimeContainer.innerHTML = message;
+            pstTimeContainer.classList.remove('d-none');
+        }
+    </script>
+</body>
+</html>
