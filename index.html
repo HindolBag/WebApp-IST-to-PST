@@ -84,6 +84,10 @@
             border: none;
             color: black;
         }
+
+        .alert-large-text {
+            font-size: 0.80rem; /* Slightly smaller size */
+        }
     </style>
 </head>
 <body>
@@ -104,7 +108,7 @@
                 </div>
                 <div class="row justify-content-center mt-4">
                     <div class="col-md-6">
-                        <div class="alert alert-info text-center d-none alert-custom" id="pstTimeContainer">
+                        <div class="alert alert-info text-center d-none alert-custom alert-large-text" id="pstTimeContainer">
                             <span id="pstTime"></span>
                         </div>
                     </div>
@@ -156,7 +160,7 @@
 
         function displayMessage(message, type) {
             const pstTimeContainer = document.getElementById('pstTimeContainer');
-            pstTimeContainer.className = `alert alert-${type} text-center pop-in alert-custom`;
+            pstTimeContainer.className = `alert alert-${type} text-center pop-in alert-custom alert-large-text`;
             pstTimeContainer.innerHTML = message;
             pstTimeContainer.classList.remove('d-none');
         }
