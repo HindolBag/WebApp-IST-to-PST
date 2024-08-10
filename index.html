@@ -7,10 +7,20 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Full viewport height and flex alignment */
-        html, body {
+        /* Smooth background color transition on page load */
+        body {
             height: 100%;
             margin: 0;
+            animation: backgroundTransition 3s ease-in-out;
+        }
+
+        @keyframes backgroundTransition {
+            from {
+                background-color: #ffffff;
+            }
+            to {
+                background-color: #f8f9fa;
+            }
         }
 
         .wrapper {
@@ -24,57 +34,103 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f8f9fa;
         }
 
-        .container-slide-in {
-            animation: containerSlideIn 1s ease-in-out;
+        /* Card zoom-in animation */
+        .card-zoom-in {
+            animation: cardZoomIn 1s ease-in-out;
         }
 
-        @keyframes containerSlideIn {
-            from { transform: translateY(100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes cardZoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
-        .input-bounce-in {
-            animation: inputBounceIn 0.8s ease-in-out;
+        .card:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out;
         }
 
-        @keyframes inputBounceIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); }
+        /* Input glow pulse and shake animation */
+        .input-glow-pulse:focus {
+            animation: inputGlowPulse 1.5s infinite;
+            outline: none;
+            border: 1px solid #80bdff;
         }
 
-        .button-bounce:active {
-            animation: buttonBounce 0.3s ease-in-out;
-        }
-
-        @keyframes buttonBounce {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.95); }
-            100% { transform: scale(1.1); }
-        }
-
-        .input-focus-pulse:focus {
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
+        @keyframes inputGlowPulse {
             0% { box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(0, 123, 255, 0.7); }
+            50% { box-shadow: 0 0 20px rgba(0, 123, 255, 0.8); }
             100% { box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); }
         }
 
-        .footer-gradient {
-            background: linear-gradient(90deg, black, #333);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .input-shake {
+            animation: inputShake 0.5s;
+        }
+
+        @keyframes inputShake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Button click wave effect and black color */
+        .button-wave {
+            position: relative;
+            overflow: hidden;
+            background-color: #000; /* Black background */
+            color: #fff; /* White text */
+            border: 1px solid #000;
+        }
+
+        .button-wave:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.1);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .button-wave:active:after {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            transition: transform 0.5s, opacity 1s;
+        }
+
+        /* Footer neon glow effect */
+        .footer-neon p {
+            font-family: 'Courier New', Courier, monospace;
+            color: #fff;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+            animation: neonGlow 2s infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            from {
+                text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+            }
+            to {
+                text-shadow: 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff;
+            }
         }
 
         footer {
             padding: 1rem;
-            background-color: #f8f9fa;
+            background-color: #000;
         }
 
         .alert-custom {
@@ -93,15 +149,15 @@
 <body>
     <div class="wrapper">
         <div class="main-content">
-            <div class="container mt-5 container-slide-in">
+            <div class="container mt-5 card-zoom-in">
                 <h2 class="text-center mb-4">IST to PST Time Conversion</h2>
                 <div class="row justify-content-center">
                     <div class="col-md-6">
-                        <div class="card shadow input-bounce-in">
+                        <div class="card shadow">
                             <div class="card-body">
                                 <p class="card-text">Enter the date and time in IST:</p>
-                                <input type="text" class="form-control mb-3 input-focus-pulse" id="istTime" placeholder="e.g. Aug 09, 2024 12:34 AM">
-                                <button class="btn btn-primary w-100 button-bounce" onclick="convertTime()">Convert to PST</button>
+                                <input type="text" class="form-control mb-3 input-glow-pulse" id="istTime" placeholder="e.g. Aug 09, 2024 12:34 AM">
+                                <button class="btn button-wave w-100" onclick="convertTime()">Convert to PST</button>
                             </div>
                         </div>
                     </div>
@@ -117,8 +173,8 @@
         </div>
 
         <!-- Developer Credit -->
-        <footer class="text-center mt-5 bg-warning">
-            <p class="footer-gradient m-0">Developed & Maintained by Hindol Bag</p>
+        <footer class="text-center mt-5 footer-neon">
+            <p class="m-0">Developed & Maintained by Hindol Bag</p>
         </footer>
     </div>
 
@@ -133,6 +189,7 @@
             istTimeInput = istTimeInput.replace(/(\d{1,2})([APM]{2})$/, '$1 $2');
 
             if (!istTimeInput) {
+                shakeInput();
                 displayMessage("Please enter a valid IST date and time.", "danger");
                 return;
             }
@@ -154,13 +211,22 @@
                 displayMessage(`PST Time: ${pstTimeFormatted}`, "info");
 
             } catch (error) {
+                shakeInput();
                 displayMessage("Please enter a valid IST date and time.", "danger");
             }
         }
 
+        function shakeInput() {
+            const inputElement = document.getElementById('istTime');
+            inputElement.classList.add('input-shake');
+            setTimeout(() => {
+                inputElement.classList.remove('input-shake');
+            }, 500);
+        }
+
         function displayMessage(message, type) {
             const pstTimeContainer = document.getElementById('pstTimeContainer');
-            pstTimeContainer.className = `alert alert-${type} text-center pop-in alert-custom alert-large-text`;
+            pstTimeContainer.className = `alert alert-${type} text-center alert-custom alert-large-text`;
             pstTimeContainer.innerHTML = message;
             pstTimeContainer.classList.remove('d-none');
         }
