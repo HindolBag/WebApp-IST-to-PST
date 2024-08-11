@@ -86,6 +86,24 @@
         .alert-large-text {
             font-size: 0.80rem; /* Slightly smaller font size for large text */
         }
+
+        /* Card entrance animation */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: zoomIn 0.6s ease-out;
+        }
+
+        /* Zoom-in animation */
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
 <body>
@@ -96,7 +114,7 @@
                 <h2 class="text-center mb-4">IST to PST Time Conversion</h2>
                 <div class="row justify-content-center">
                     <div class="col-md-6">
-                        <!-- Card for input and conversion -->
+                        <!-- Card for input and conversion with animations -->
                         <div class="card shadow">
                             <div class="card-body">
                                 <p class="card-text">Enter the date and time in IST:</p>
