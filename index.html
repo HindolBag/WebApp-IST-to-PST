@@ -3,189 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IST to PST Time Conversion</title>
-    <!-- Bootstrap CSS for styling -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>IST to PST Converter</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Basic page styles */
-        body {
+        /* Basic reset for body and html to ensure full height and no margin */
+        body, html {
             height: 100%;
             margin: 0;
-            background-color: #f8f9fa; /* Light grey background */
         }
 
-        .wrapper {
+        /* Flex container to center content vertically and horizontally */
+        .full-height {
+            height: calc(100vh - 50px); /* Adjust height to account for footer height */
             display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Full viewport height */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
         }
 
-        .main-content {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Button wave effect on click */
-        .button-wave {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .button-wave:after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300%;
-            height: 300%;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.1);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .button-wave:active:after {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-            transition: transform 0.5s, opacity 1s;
-        }
-
-        /* Neon glow effect for footer */
-        .footer-neon p {
-            font-family: 'Courier New', Courier, monospace;
-            color: #fff;
-            text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
-            animation: neonGlow 2s infinite alternate;
-        }
-
-        @keyframes neonGlow {
-            from {
-                text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
-            }
-            to {
-                text-shadow: 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff;
-            }
-        }
-
-        footer {
-            padding: 1rem;
-            background-color: #000; /* Black background for footer */
-        }
-
+        /* Custom styles for the alert container */
         .alert-custom {
-            font-family: Arial, sans-serif;
-            font-size: 11px; /* Custom font size for alerts */
-            background-color: transparent;
-            border: none;
-            color: black; /* Black text color for alerts */
+            font-size: 0.80rem; /* Set font size to 0.80 rem */
+            background-color: transparent; /* Remove the background color */
+            color: black; /* Set font color to black */
+            font-family: Arial, sans-serif; /* Set font to Arial */
+            position: absolute; /* Fix position to ensure it doesn’t move */
+            top: 100%; /* Position below the form */
+            left: 50%;
+            transform: translateX(-50%); /* Center horizontally */
+            width: 100%;
+            max-width: 600px; /* Set a max width */
+            z-index: 10; /* Ensure it appears above other elements */
+            margin-top: 20px; /* Adjust this value as needed for the desired gap */
         }
 
-        .alert-large-text {
-            font-size: 0.80rem; /* Slightly smaller font size for large text */
-        }
-
-        /* Card fade-in and slide-up animation */
-        .card {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1s ease forwards;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Footer styling */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background-color: #000; /* Black background */
+            color: #fff; /* White text color */
         }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <!-- Main content area -->
-        <div class="main-content">
-            <div class="container mt-5">
-                <h2 class="text-center mb-4">IST to PST Time Conversion</h2>
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <!-- Card for input and conversion with fade-in and slide-up animation -->
-                        <div class="card shadow">
-                            <div class="card-body">
-                                <p class="card-text">Enter the date and time in IST:</p>
-                                <!-- Input field for IST time -->
-                                <input type="text" class="form-control mb-3" id="istTime" placeholder="e.g. Aug 09, 2024 12:34 AM">
-                                <!-- Button to trigger conversion -->
-                                <button class="btn btn-dark w-100 button-wave" onclick="convertTime()">Convert to PST</button>
-                            </div>
-                        </div>
+    <!-- Main container to center content vertically and horizontally -->
+    <div class="full-height">
+        <div class="container">
+            <h1 class="text-center mb-4">IST to PST Time Converter</h1>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <!-- Input Form for IST time -->
+                    <div class="form-group">
+                        <label for="istTime">Enter IST Time (e.g., Aug 10, 2024 00:00 AM):</label>
+                        <input type="text" class="form-control" id="istTime" placeholder="Aug 10, 2024 00:00 AM">
                     </div>
-                </div>
-                <!-- Container for displaying the converted PST time -->
-                <div class="row justify-content-center mt-4">
-                    <div class="col-md-6">
-                        <div class="alert alert-info text-center d-none alert-custom alert-large-text" id="pstTimeContainer">
-                            <span id="pstTime"></span>
-                        </div>
-                    </div>
+                    <button class="btn btn-dark btn-block" onclick="convertTime()">Convert to PST</button>
+                    <!-- Container for displaying the converted PST time -->
+                    <div id="pstTimeContainer" class="alert alert-info text-center alert-custom d-none mt-3"></div>
                 </div>
             </div>
         </div>
-
-        <!-- Footer with developer credit -->
-        <footer class="text-center mt-5 footer-neon">
-            <p class="m-0">Developed & Maintained by Hindol Bag</p>
-        </footer>
     </div>
 
+    <!-- Footer -->
+    <footer>
+        Developed & Maintained by Hindol Bag
+    </footer>
+
     <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.8/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript Functions -->
     <script>
+        // Function to convert IST time to PST time
         function convertTime() {
             let istTimeInput = document.getElementById('istTime').value.trim();
-            // Format the input to ensure it's in the correct format
-            istTimeInput = istTimeInput.replace(/(\d{1,2})([APM]{2})$/, '$1 $2');
+            istTimeInput = istTimeInput.replace(/(\d{1,2})([apAP][mM])$/, '$1 $2');
 
+            // Check if input is empty and display an error message
             if (!istTimeInput) {
                 displayMessage("Please enter a valid IST date and time.", "danger");
                 return;
             }
 
             try {
-                // Create a Date object with IST time by adding GMT offset
+                // Create a Date object for the IST time
                 const istDate = new Date(istTimeInput + " GMT+0530");
-
                 if (isNaN(istDate.getTime())) {
                     throw new Error("Invalid date format");
                 }
 
-                // Convert IST to PST (subtract 12.5 hours)
+                // Convert IST to PST by subtracting 12.5 hours
                 const pstDate = new Date(istDate.getTime() - (12.5 * 60 * 60 * 1000));
-
-                // Format PST time for display
                 const options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
                 let pstTimeFormatted = pstDate.toLocaleString('en-US', options);
-
-                // Adjust formatting to remove unwanted commas
                 pstTimeFormatted = pstTimeFormatted.replace(/(\d{4}),/, '$1');
 
+                // Display the converted PST time
                 displayMessage(`PST Time: ${pstTimeFormatted}`, "info");
 
             } catch (error) {
+                // Display an error message if the input is invalid
                 displayMessage("Please enter a valid IST date and time.", "danger");
             }
         }
 
+        // Function to display messages in the alert container
         function displayMessage(message, type) {
-            // Update alert message and style
             const pstTimeContainer = document.getElementById('pstTimeContainer');
-            pstTimeContainer.className = `alert alert-${type} text-center alert-custom alert-large-text`;
+            pstTimeContainer.className = `alert alert-${type} text-center alert-custom`;
             pstTimeContainer.innerHTML = message;
             pstTimeContainer.classList.remove('d-none'); // Show the alert
         }
