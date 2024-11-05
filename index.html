@@ -100,7 +100,7 @@
                 }
 
                 // Convert IST to PST by subtracting 12.5 hours
-                const pstDate = new Date(istDate.getTime() - (11.5 * 60 * 60 * 1000));
+                const pstDate = new Date(istDate.getTime() - (13.5 * 60 * 60 * 1000));
                 const options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
                 let pstTimeFormatted = pstDate.toLocaleString('en-US', options);
                 pstTimeFormatted = pstTimeFormatted.replace(/(\d{4}),/, '$1');
